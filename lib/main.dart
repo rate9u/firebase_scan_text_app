@@ -46,11 +46,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
   Future<void> _scan() async{
     File imageFile = await FilePicker.getFile();
     final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(imageFile);
 
-    final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
 
     final VisionText visionText = await textRecognizer.processImage(visionImage);
 
@@ -95,6 +95,14 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     );
   }
+
+  @override
+  void dispose() {
+    textRecognizer.close();
+    super.dispose();
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
